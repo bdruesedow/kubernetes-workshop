@@ -1,2 +1,2 @@
-./examples/environment/home/*
-./examples/environment/jenkins_data/*
+examples/environment/home
+examples/environment/jenkins_data
