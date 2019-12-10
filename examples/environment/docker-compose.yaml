@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  # https://hub.docker.com/r/jenkinsci/blueocean
+  jenkins:
+    image: jenkinsci/blueocean
+    user: root
+    ports:
+      - "9080:8080"
+      - "8443:8443"
+      - "50000:50000"
+    volumes:
+      - ./jenkins_data:/var/jenkins_home
+      - ./home:/home
+      - //var/run/docker.sock:/var/run/docker.sock
+
+  registry:
+    # https://hub.docker.com/_/registry
+    image: registry:2
+    ports:
+      - "5000:5000"
