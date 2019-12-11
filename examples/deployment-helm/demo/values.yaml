@@ -1,0 +1,49 @@
+# Default values for demo.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+profile: local
+
+greetingbackend:
+  enabled: true
+  image:
+    replicaCount: 1
+    name: greeting-backend
+    repository: localhost:9555/greeting-backend
+    tag: latest
+    pullPolicy: Always
+    imagePullSecrets: regcred
+  service:
+    type: ClusterIP
+    port: 8080
+    targetPort: 9000
+  config:
+    name: greeting-backend-config
+
+
+database:
+  enabled: true
+  imageTag: "5.5.62"
+  mysqlRootPassword: "s1ch3r"
+  mysqlDatabase: greeting
+  alias: database
+  persistence:
+    enabled: true
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

@@ -1,0 +1,23 @@
+{{- if .Values.greetingbackend.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.greetingbackend.image.name }}
+  labels:
+    app.kubernetes.io/name: {{ include "demo.chart" . }}
+    helm.sh/chart: {{ include "demo.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app: {{.Values.greetingbackend.image.name}}
+    part: {{ include "demo.chart" . }}
+spec:
+  type: {{ .Values.greetingbackend.service.type }}
+  ports:
+    - port: {{ .Values.greetingbackend.service.port }}
+      protocol: TCP
+  sessionAffinity: "None"
+  selector:
+    app.kubernetes.io/name: {{ include "demo.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app: {{.Values.greetingbackend.image.name}}
+{{- end}}

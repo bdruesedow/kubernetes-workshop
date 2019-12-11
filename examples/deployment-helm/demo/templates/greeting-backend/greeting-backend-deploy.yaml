@@ -1,0 +1,73 @@
+{{- if .Values.greetingbackend.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.greetingbackend.image.name }}
+  labels:
+    app.kubernetes.io/name: {{ include "demo.chart" . }}
+    helm.sh/chart: {{ include "demo.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.greetingbackend.image.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "demo.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app: {{.Values.greetingbackend.image.name}}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "demo.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app: {{.Values.greetingbackend.image.name}}
+    spec:
+      imagePullSecrets:
+        - name: {{ .Values.greetingbackend.imagePullSecrets }}
+      securityContext: {}
+      volumes:
+        - name: {{ .Values.greetingbackend.config.name }}
+          configMap:
+            name: {{ .Values.greetingbackend.config.name }}
+            items:
+              - key: application.properties
+                path: application.properties
+      initContainers:
+        - name: init-container
+          image: busybox:1.28
+          command: ['sh', '-c', 'until nslookup demo-database; do echo db is not ready yet...; sleep 2; done && sleep 40'] # example for readiness Probe
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.greetingbackend.image.repository }}:{{ .Values.greetingbackend.image.tag }}"
+          imagePullPolicy: {{ .Values.greetingbackend.image.pullPolicy }}
+          ports:
+            - name: "http"
+              containerPort: {{ .Values.greetingbackend.service.port }}
+          volumeMounts:
+            - name: {{ .Values.greetingbackend.config.name }}
+              mountPath: "/home/config"
+              readOnly: true
+          env:
+          - name: DSPRING_DATASOURCE_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: database-secrets
+                key: db-username
+          - name: DSPRING_DATASOURCE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: database-secrets
+                key: db-password
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            initialDelaySeconds: 120
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            initialDelaySeconds: 120
+            periodSeconds: 5
+{{- end}}
