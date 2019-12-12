@@ -1,6 +1,7 @@
 package de.imp.bdr.k8sdemo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 
@@ -10,7 +11,12 @@ import javax.persistence.*;
 public class Greeting {
 
     @Id
+    @Column(name="ID")
+    @JsonProperty("id")
     private long id;
+
+    @Column(name="content")
+    @JsonProperty("content")
     private String content;
 
 

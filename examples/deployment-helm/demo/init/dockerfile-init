@@ -1,0 +1,10 @@
+FROM alpine:latest
+
+RUN apk update
+RUN apk add bash
+RUN apk add mysql-client
+
+COPY createTable.sql /home/createTable.sql
+WORKDIR /home
+
+CMD sleep 40 && mysql -hdemo-database -uroot -ps1ch3r greeting < createTable.sql

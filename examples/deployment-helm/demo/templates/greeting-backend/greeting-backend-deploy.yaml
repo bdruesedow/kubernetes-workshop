@@ -32,10 +32,6 @@ spec:
             items:
               - key: application.properties
                 path: application.properties
-      initContainers:
-        - name: init-container
-          image: busybox:1.28
-          command: ['sh', '-c', 'until nslookup demo-database; do echo db is not ready yet...; sleep 2; done && sleep 40'] # example for readiness Probe
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.greetingbackend.image.repository }}:{{ .Values.greetingbackend.image.tag }}"
