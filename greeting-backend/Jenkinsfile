@@ -23,9 +23,11 @@ pipeline {
     stages {
         stage("Package") {
             steps {
-                sh "cd greeting-backend"
-                sh "chmod +x gradlew"
-                sh "./gradlew bootJar"
+                script {
+                    cd greeting-backend
+                    chmod +x gradlew"
+                    ./gradlew bootJar
+                }
             }
         }
         stage("Build and Push Docker Image") {
