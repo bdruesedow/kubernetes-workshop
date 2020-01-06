@@ -21,14 +21,11 @@ pipeline {
         SUBDIR = "greeting-backend"
     }
     stages {
-        stage("Add execution flag to gradlew") {
-            steps {
-                sh "chmod +x greeting-backend/gradlew"
-            }
-        }
         stage("Package") {
             steps {
-                sh "greeting-backend/gradlew bootJar"
+                sh "cd greeting-backend"
+                sh "chmod +x gradlew"
+                sh "./gradlew bootJar"
             }
         }
         stage("Build and Push Docker Image") {
