@@ -1,4 +1,5 @@
 FROM openjdk:8-jdk-alpine
+RUN chmod -R a+rwX /var/log
 
 RUN apk add curl
 
