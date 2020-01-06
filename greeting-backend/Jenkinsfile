@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     cd greeting-backend
-                    chmod +x gradlew"
+                    chmod +x gradlew
                     ./gradlew bootJar
                 }
             }
