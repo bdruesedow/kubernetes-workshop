@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class Greeting {
 
     @Id
-    @Column(name="ID")
+    @Column(name="_id")
     @JsonProperty("id")
     private long id;
 

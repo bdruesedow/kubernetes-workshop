@@ -77,4 +77,25 @@ public class GreetingController {
         return response;
     }
 
+    @RequestMapping("/health")
+    public AtomicReference<ResponseEntity> health() {
+
+        String accept = request.getHeader("Accept");
+        AtomicReference<ResponseEntity> response = new AtomicReference<ResponseEntity>();
+
+        try {
+
+            System.out.println("GET /health");
+
+            response.set(new ResponseEntity(HttpStatus.OK));
+
+        } catch (Exception e) {
+
+            response.set(new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR));
+        }
+
+        return response;
+    }
+
+
 }

@@ -9,7 +9,7 @@ greetingbackend:
   image:
     replicaCount: 1
     name: greeting-backend
-    repository: localhost:9555/greeting-backend
+    repository: localhost:5500/greeting-backend
     tag: latest
     pullPolicy: Always
     imagePullSecrets: regcred

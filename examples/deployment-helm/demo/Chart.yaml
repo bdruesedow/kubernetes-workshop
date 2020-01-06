@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: v2
 name: demo
 description: A demo Helm chart for Kubernetes deployments
 

@@ -32,6 +32,10 @@ spec:
             items:
               - key: application.properties
                 path: application.properties
+      initContainers:
+        - name: wait-container
+          image: alpine:3
+          command: '/bin/sh', '-c', 'sleep 60'
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.greetingbackend.image.repository }}:{{ .Values.greetingbackend.image.tag }}"
@@ -56,14 +60,14 @@ spec:
                 key: db-password
           livenessProbe:
             httpGet:
-              path: /actuator/health
+              path: /health
               port: http
             initialDelaySeconds: 120
-            periodSeconds: 5
+            periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /actuator/health
+              path: /health
               port: http
             initialDelaySeconds: 120
-            periodSeconds: 5
+            periodSeconds: 10
 {{- end}}

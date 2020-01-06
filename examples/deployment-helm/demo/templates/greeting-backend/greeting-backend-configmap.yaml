@@ -7,3 +7,5 @@ metadata:
 data:
     application.properties: | # | is required to provide a real properties file not just texts
         spring.datasource.url=jdbc:mysql://{{.Release.Name}}-{{.Values.database.alias}}.default.svc.cluster.local:3306/{{.Values.database.mysqlDatabase}}?createDatabaseIfNotExist=true
+        spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
+        spring.jpa.hibernate.ddl-auto=update
