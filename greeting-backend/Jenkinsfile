@@ -28,7 +28,7 @@ pipeline {
         }
         stage("Package") {
             steps {
-                sh ".greeting-backend/gradlew bootJar"
+                sh "greeting-backend/gradlew bootJar"
             }
         }
         stage("Build and Push Docker Image") {
