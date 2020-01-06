@@ -18,16 +18,17 @@ pipeline {
     }
     environment {
         GIT_REPO_NAME = GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')
+        SUBDIR = "greeting-backend"
     }
     stages {
         stage("Add execution flag to gradlew") {
             steps {
-                sh "chmod +x gradlew"
+                sh "chmod +x greeting-backend/gradlew"
             }
         }
         stage("Package") {
             steps {
-                sh "./gradlew bootJar"
+                sh ".greeting-backend/gradlew bootJar"
             }
         }
         stage("Build and Push Docker Image") {
@@ -37,7 +38,7 @@ pipeline {
                 DOCKERTAG = "${REGISTRY}/${GIT_REPO_NAME}:${FULLVERSION}"
             }
             steps {
-                sh "docker build -t ${DOCKERTAG} -f dockerfile-cluster ."
+                sh "docker build -t ${DOCKERTAG} -f greeting-backend/dockerfile-cluster greeting-backend/"
                 sh "docker push ${DOCKERTAG}"
             }
             post {
