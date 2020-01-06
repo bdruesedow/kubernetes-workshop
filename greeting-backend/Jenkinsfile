@@ -1,0 +1,65 @@
+/* Flag is true when the last git commit is done by the semantic-release tool.
+*  The commit message looks like: chore(release): {version} [skip ci]
+*  This means all stages can be skipped, because nothing changed, but the version in package.json.
+*/
+def wasLastCommitSemanticReleaseVersioningOnly = false
+
+pipeline {
+    agent {
+        dockerfile {
+            filename 'dockerfile-jenkins'
+            // mount the docker daemon from the host into the agent
+            args '-ti -v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
+    options {
+        disableConcurrentBuilds()
+        buildDiscarder(logRotator(numToKeepStr: '4'))
+    }
+    environment {
+        GIT_REPO_NAME = GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')
+    }
+    stages {
+        stage("Add execution flag to gradlew") {
+            steps {
+                sh "chmod +x gradlew"
+            }
+        }
+        stage("Package") {
+            steps {
+                sh "./gradlew bootJar"
+            }
+        }
+        stage("Build and Push Docker Image") {
+            environment {
+                REGISTRY = "172.18.0.2:5000"
+                SHORT_BRANCH = "${shortenGitBranch()}"
+                DOCKERTAG = "${REGISTRY}/${GIT_REPO_NAME}:${FULLVERSION}"
+            }
+            steps {
+                sh "docker build -t ${DOCKERTAG} -f dockerfile-cluster ."
+                sh "docker push ${DOCKERTAG}"
+            }
+            post {
+                always {
+                    sh "docker rmi ${DOCKERTAG}"
+                }
+            }
+        }
+    } // stages
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}
+
+// Returns the git branch without e.g. "origin/" or "feature/"
+def shortenGitBranch() {
+    def gitBranch = GIT_BRANCH.trim()
+    if (gitBranch.contains('/')) {
+        gitBranch = gitBranch.split('/').last()
+    }
+    echo "Shortened git branch: ${gitBranch}"
+    return gitBranch
+}
