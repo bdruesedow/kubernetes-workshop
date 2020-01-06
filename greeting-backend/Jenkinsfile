@@ -18,27 +18,29 @@ pipeline {
     }
     environment {
         GIT_REPO_NAME = GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')
-        SUBDIR = "greeting-backend"
+        REGISTRY = "environment_registry_1:5000"
     }
     stages {
         stage("Package") {
             steps {
-                script {
-                    cd greeting-backend
-                    chmod +x gradlew
-                    ./gradlew bootJar
+                dir("greeting-backend") {
+                    sh "pwd"
+                    sh "chmod +x gradlew"
+                    sh "./gradlew bootJar"
                 }
             }
         }
         stage("Build and Push Docker Image") {
             environment {
-                REGISTRY = "172.18.0.2:5000"
                 SHORT_BRANCH = "${shortenGitBranch()}"
-                DOCKERTAG = "${REGISTRY}/${GIT_REPO_NAME}:${FULLVERSION}"
+                DOCKERTAG = "${REGISTRY}/greeting-backend:${SHORT_BRANCH}-build.${BUILD_NUMBER}"
             }
             steps {
-                sh "docker build -t ${DOCKERTAG} -f greeting-backend/dockerfile-cluster greeting-backend/"
-                sh "docker push ${DOCKERTAG}"
+                dir("greeting-backend") {
+                    sh "pwd"
+                    sh "docker build -t ${DOCKERTAG} -f docker/dockerfile-app-local ."
+                    sh "docker push ${DOCKERTAG}"
+                }
             }
             post {
                 always {
