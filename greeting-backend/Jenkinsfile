@@ -7,7 +7,7 @@ def wasLastCommitSemanticReleaseVersioningOnly = false
 pipeline {
     agent {
         dockerfile {
-            filename 'docker/dockerfile-jenkins'
+            filename 'greeting-backend/docker/dockerfile-jenkins'
             // mount the docker daemon from the host into the agent
             args '-ti -v /var/run/docker.sock:/var/run/docker.sock'
         }
