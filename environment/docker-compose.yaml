@@ -2,6 +2,7 @@ version: '3'
 
 services:
   jenkins:
+    container_name: jenkins
     # https://hub.docker.com/r/jenkinsci/blueocean
     image: jenkinsci/blueocean
     user: root
@@ -15,6 +16,7 @@ services:
       - //var/run/docker.sock:/var/run/docker.sock
 
   registry:
+    container_name: registry
     # https://hub.docker.com/_/registry
     image: registry:2
     ports:

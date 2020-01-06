@@ -18,7 +18,7 @@ pipeline {
     }
     environment {
         GIT_REPO_NAME = GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')
-        REGISTRY = "environment_registry_1:5000"
+        REGISTRY = "registry:5000"
     }
     stages {
         stage("Package") {
