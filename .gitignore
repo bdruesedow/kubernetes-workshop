@@ -1,5 +1,5 @@
-examples/environment/home
-examples/environment/jenkins_data
+environment/home
+environment/jenkins_data
 
 ### Backend ###
 HELP.md
