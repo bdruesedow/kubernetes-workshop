@@ -9,8 +9,8 @@ greetingbackend:
   image:
     replicaCount: 1
     name: greeting-backend
-    repository: localhost:5500/greeting-backend
-    tag: latest
+    repository: 10.2.6.72:5002/greeting-backend
+    tag: master-build.27
     pullPolicy: Always
     imagePullSecrets: regcred
   service:
