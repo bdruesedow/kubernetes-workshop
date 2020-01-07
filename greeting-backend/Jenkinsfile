@@ -18,7 +18,7 @@ pipeline {
     }
     environment {
         GIT_REPO_NAME = GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')
-        REGISTRY = "registry:5000"
+        REGISTRY = "10.2.6.72:5002" // muss in /.docker/daemon.json als insecure registry stehen!
     }
     stages {
         stage("Package") {
