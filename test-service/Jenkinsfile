@@ -1,0 +1,60 @@
+pipeline {
+    agent {
+        dockerfile {
+            filename 'greeting-backend/docker/dockerfile-jenkins'
+            // mount the docker daemon from the host into the agent
+            args '-ti -v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
+    options {
+        disableConcurrentBuilds()
+        buildDiscarder(logRotator(numToKeepStr: '4'))
+    }
+    environment {
+        GIT_REPO_NAME = GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')
+        REGISTRY = "10.2.6.72:5002" // muss in /.docker/daemon.json als insecure registry stehen!
+    }
+    stages {
+        stage("Package") {
+            steps {
+                dir("test-service") {
+                    sh "pwd"
+                    sh "chmod +x gradlew"
+                    sh "./gradlew bootJar"
+                }
+            }
+        }
+        stage("Build and Push Docker Image") {
+            environment {
+                SHORT_BRANCH = "${shortenGitBranch()}"
+                DOCKERTAG = "${REGISTRY}/test-service:${SHORT_BRANCH}-build.${BUILD_NUMBER}"
+            }
+            steps {
+                dir("greeting-backend") {
+                    sh "pwd"
+                    sh "docker build -t ${DOCKERTAG} -f docker/dockerfile-app-local ."
+                    sh "docker push ${DOCKERTAG}"
+                }
+            }
+            post {
+                always {
+                    sh "docker rmi ${DOCKERTAG}"
+                }
+            }
+        }
+    } // stages
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}
+
+// Returns the git branch without e.g. "origin/" or "feature/"
+def shortenGitBranch() {
+    def gitBranch = GIT_BRANCH.trim()
+    if (gitBranch.contains('/')) {
+        gitBranch = gitBranch.split('/').last()
+    }
+    return gitBranch
+}
