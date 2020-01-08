@@ -62,6 +62,5 @@ def shortenGitBranch() {
     if (gitBranch.contains('/')) {
         gitBranch = gitBranch.split('/').last()
     }
-    echo "Shortened git branch: ${gitBranch}"
     return gitBranch
 }

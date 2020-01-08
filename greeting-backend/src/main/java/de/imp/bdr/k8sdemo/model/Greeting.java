@@ -15,24 +15,24 @@ public class Greeting {
     @JsonProperty("id")
     private long id;
 
-    @Column(name="content")
-    @JsonProperty("content")
-    private String content;
+    @Column(name="name")
+    @JsonProperty("name")
+    private String name;
 
 
     public Greeting() {
     }
 
-    public Greeting(long id, String content) {
+    public Greeting(long id, String name) {
         this.id = id;
-        this.content = content;
+        this.name = name;
     }
 
     public long getId() {
         return id;
     }
 
-    public String getContent() {
-        return content;
+    public String getName() {
+        return name;
     }
 }

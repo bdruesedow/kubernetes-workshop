@@ -10,7 +10,7 @@ greetingbackend:
     replicaCount: 1
     name: greeting-backend
     repository: 10.2.6.72:5002/greeting-backend
-    tag: master-build.27
+    tag: master-build.29
     pullPolicy: Always
     imagePullSecrets: regcred
   service:
