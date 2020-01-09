@@ -1,4 +1,4 @@
-package de.imp.bdr.k8sdemo.model;
+package de.imp.bdr.greetingservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

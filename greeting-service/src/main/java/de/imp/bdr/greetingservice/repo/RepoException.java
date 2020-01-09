@@ -1,4 +1,4 @@
-package de.imp.bdr.k8sdemo.repo;
+package de.imp.bdr.greetingservice.repo;
 
 public class RepoException extends Exception {
 }

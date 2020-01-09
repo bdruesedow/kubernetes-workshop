@@ -1,6 +1,6 @@
-package de.imp.bdr.k8sdemo.repo;
+package de.imp.bdr.greetingservice.repo;
 
-import de.imp.bdr.k8sdemo.model.Greeting;
+import de.imp.bdr.greetingservice.model.Greeting;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface GreetingJpaRepo extends JpaRepository<Greeting, Long> {

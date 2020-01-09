@@ -1,9 +1,9 @@
-package de.imp.bdr.k8sdemo.controller;
+package de.imp.bdr.greetingservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.imp.bdr.k8sdemo.model.Greeting;
-import de.imp.bdr.k8sdemo.repo.GreetingRepo;
-import de.imp.bdr.k8sdemo.repo.RepoException;
+import de.imp.bdr.greetingservice.model.Greeting;
+import de.imp.bdr.greetingservice.repo.GreetingRepo;
+import de.imp.bdr.greetingservice.repo.RepoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

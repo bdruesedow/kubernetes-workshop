@@ -4,7 +4,7 @@ plugins {
 	id 'java'
 }
 
-group = 'de.imp.bdr.k8s-demo'
+group = 'de.imp.bdr.greetingservice'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
