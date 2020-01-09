@@ -4,6 +4,8 @@
 
 ## Environment Setup
 
+Deploys Jenkins and a local Docker-Registry:
+
 ```
 cd environment
 ```
@@ -12,8 +14,7 @@ cd environment
 docker-compose up -d
 ```
 
-Deploys Jenkins and a local Docker-Registry:
-
+Setup registry secret as Kubernetes secret:
 
 ```
 kubectl create secret generic regcred \
