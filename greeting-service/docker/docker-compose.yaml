@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  greeting-service:
+    container_name: greeting-service
+    image: greeting-service:latest
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - compose-deployment
+
+  mysqldb:
+    container_name: mysqldb
+    image: mysql:5.7.14
+    environment:
+      MYSQL_DATABASE: greeting
+      MYSQL_ROOT_PASSWORD: s1ch3r
+    networks:
+      - compose-deployment
+
+networks:
+  compose-deployment:
