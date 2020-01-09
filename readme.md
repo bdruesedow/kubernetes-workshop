@@ -77,7 +77,7 @@ docker rm greeting-backend mysqldb
 ## Deployment with Compose:
 
 ```
-cd greeting-service
+cd compose
 docker-compose up -d
 ```
 
@@ -96,13 +96,23 @@ docker-compose down
 
 ## Deployment to Kubernetes with Helm
 
+* Release Helm Chart
+
 ```
 cd helm/demo
 helm install <release-name> <path-to-chart>
 ```
 
+* Look into the cluster:
 
+```
+kuebctl get deployments
+kubectl get pods
+kubectl get services
 
+kubectl logs -f <pod>
+kubectl describe <ressource>
+```
 
 ## Cleanup
 
