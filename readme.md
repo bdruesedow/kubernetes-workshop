@@ -7,7 +7,8 @@
 
 * Install Docker: [How to install Docker on Windows](https://www.docker.com/products/docker-desktop)
 * Install local Kubernetes Cluster with Docker-for-Windows:
-![Kubernetes Setup](/lecture/images/kubernetes.png)
+
+![Kubernetes Setup](https://raw.githubusercontent.com/bdruesedow/kubernetes-workshop/master/lecture/images/kubernetes.PNG)
 
 or use Minikube: [How to install minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
 
