@@ -92,13 +92,13 @@ curl localhost:8080/getGreetings
 docker-compose down
 ```
 
-## Kubernetes Tutorials
+## Kubernetes Tutorials:
 
 Interactive Kubernetes Tutorial: [Kubernetes.io Basics](https://kubernetes.io/de/docs/tutorials/kubernetes-basics/)
 
 
 
-## Deployment to Kubernetes with Helm
+## Deployment to Kubernetes with Helm:
 
 1. Setup registry secret as Kubernetes secret:
 
@@ -137,8 +137,18 @@ kubectl describe <ressource>
         * `localhost:<forwarded-port-of-helloworld-service>/hello`
 
 
+## CI-Pipeline with Jenkins:
 
-## Cleanup
+* In `~/.docker/daemon.json` add an insecure registry for `registry:5000`
+* Open `localhost:8090` in a browser
+* Create a new Multibranch Pipeline
+    * Add Branch Sources -> GitHub
+    * Create Credentials based on your GitHub Login
+    * Enter Repository URL (https://github.com/bdruesedow/kubernetes-workshop.git)
+    * Jenkinsfile path is `greeting-service/Jenkinsfile`
+* Scan Multibranch Pipeline
+
+## Docker Cleanup
 
 * Remove unused containers: `docker container prune`
 * Remove unused networks: `docker network prune`
