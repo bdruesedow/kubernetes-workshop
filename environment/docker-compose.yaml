@@ -7,7 +7,7 @@ services:
     image: jenkinsci/blueocean
     user: root
     ports:
-      - "8081:8080"
+      - "8090:8080"
       - "8443:8443"
       - "50000:50000"
     volumes:
