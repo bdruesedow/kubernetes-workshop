@@ -173,9 +173,9 @@ Interactive Kubernetes Tutorial: [Kubernetes.io Basics](https://kubernetes.io/de
 
 * Check if it works:
 
-Jenkins: `localhost:8090`
+    Jenkins: `localhost:8090`
 
-Registry: `localhost:5000/v2/\_catalog`
+    Registry: `localhost:5000/v2/\_catalog`
 
 * Setup Jenkins:
     * Open `localhost:8090` in a browser
@@ -185,12 +185,12 @@ Registry: `localhost:5000/v2/\_catalog`
         cat /var/jenkins_home/secrets/initialAdminPassword
         ```
     * After account setup, choose "*Install suggested plugins*"
-
     ![Jenkins Welcome Screen](https://raw.githubusercontent.com/bdruesedow/kubernetes-workshop/master/lecture/images/jenkins.PNG)
+    * Create Username/Password Credentials based on your GitHub Login
+    ![Jenkins Credentials](https://raw.githubusercontent.com/bdruesedow/kubernetes-workshop/master/lecture/images/jenkins_credentials.PNG)
 
 * Create a new Multibranch Pipeline
     * Add Branch Sources -> GitHub
-    * Create Username/Password Credentials based on your GitHub Login
     * Enter Repository URL (https://github.com/bdruesedow/kubernetes-workshop.git)
     * Jenkinsfile path is `greeting-service/Jenkinsfile`
 * Scan Multibranch Pipeline
@@ -200,3 +200,24 @@ Registry: `localhost:5000/v2/\_catalog`
 * Remove unused containers: `docker container prune`
 * Remove unused networks: `docker network prune`
 * Remove unused images: `docker image prune`
+
+## Troubleshoot:
+
+![Jenkins Credentials](https://raw.githubusercontent.com/bdruesedow/kubernetes-workshop/master/lecture/images/registry_error.PNG)
+
+Docker daemon has not permission to pull from an insecure registry, that is not configured in `daemon.json`. To fix this, add the registry as insecure regsitry.
+
+With docker desktop:
+
+![Docker Settings Daemon](https://raw.githubusercontent.com/bdruesedow/kubernetes-workshop/master/lecture/images/daemon.PNG)
+
+or directly the `daemon.json` file:
+
+```               
+{                                           
+ "registry-mirrors": [],                   
+ "insecure-registries": ["<your-ip>:5002"],
+ "debug": true,                            
+ "experimental": false                     
+}                                           
+```
