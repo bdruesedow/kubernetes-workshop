@@ -43,76 +43,76 @@ When asked, grant access to your filesystem:
 2. Write Dockerfile for helloworld-service
 3. Build Dockerimages for greeting-service and helloworld-service
 
-```
-docker build -t <service-name>:<tag> -f <path-to-dockerfile> <path-to-folder>
-```
+    ```
+    docker build -t <service-name>:<tag> -f <path-to-dockerfile> <path-to-folder>
+    ```
 For example:
-```
-docker build -t greeting-service:latest -f docker/dockerfile-app .
-```
+    ```
+    docker build -t greeting-service:latest -f docker/dockerfile-app .
+    ```
 
 4. Create Docker network to ensure communication between the services:
 
-```
-docker network create <network-name>
-docker network ls
-```
+    ```
+    docker network create <network-name>
+    docker network ls
+    ```
 
 5. Deploy MySQL database:
 
-```
-docker run --name mysqldb --net <network-name> -e MYSQL_ROOT_PASSWORD=s1ch3r -d mysql:5.7.14
-```
+    ```
+    docker run --name mysqldb --net <network-name> -e MYSQL_ROOT_PASSWORD=s1ch3r -d mysql:5.7.14
+    ```
 
 6. Deploy greeting-service:
 
-```
-docker run --name greeting-service --net <network-name> -d -p 8080:8080 greeting-service:latest
-docker logs -f greeting-service
-```
+    ```
+    docker run --name greeting-service --net <network-name> -d -p 8080:8080 greeting-service:latest
+    docker logs -f greeting-service
+    ```
 
 7. Deploy helloworld-service:
 
-```
-docker run --name helloworld-service --net <network-name> -d -p 8081:8080 helloworld-service:latest
-docker logs -f helloworld-service
-```
+    ```
+    docker run --name helloworld-service --net <network-name> -d -p 8081:8080 helloworld-service:latest
+    docker logs -f helloworld-service
+    ```
 
 8. Test the services:
 
-```
-curl localhost:8080/greeting?name=World
-curl localhost:8080/getGreetings
+    ```
+    curl localhost:8080/greeting?name=World
+    curl localhost:8080/getGreetings
 
-curl localhost:8081/hello
-```
+    curl localhost:8081/hello
+    ```
 
 8. Stop and delete container:
 
-```
-docker stop greeting-service mysqldb
-docker rm greeting-service mysqldb
-```
+    ```
+    docker stop greeting-service mysqldb
+    docker rm greeting-service mysqldb
+    ```
 
 ## Deployment with Compose:
 
-```
-cd compose
-docker-compose up -d
-```
+    ```
+    cd compose
+    docker-compose up -d
+    ```
 
 * Test application:
 
-```
-curl localhost:8080/greeting?name=World
-curl localhost:8080/getGreetings
-```
+    ```
+    curl localhost:8080/greeting?name=World
+    curl localhost:8080/getGreetings
+    ```
 
 * Stop container:
 
-```
-docker-compose down
-```
+    ```
+    docker-compose down
+    ```
 
 ## Kubernetes Tutorials:
 
