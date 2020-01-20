@@ -1,0 +1,6 @@
+
+Motivation:
+
+- Deployments und Management einfacher und schneller
+- Tools und Technologien vorstellen
+- Containerisierung -> Orchestrierung -> Deployment
