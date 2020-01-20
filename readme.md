@@ -134,9 +134,9 @@ Interactive Kubernetes Tutorial: [Kubernetes.io Basics](https://kubernetes.io/de
 
 2. Look into the cluster:
 
-Run `k9s.exe`
+    Run `k9s.exe`
 
-or use `kubectl` commands:
+    or use `kubectl` commands:
 
     ```
     kuebctl get deployments
@@ -185,6 +185,8 @@ Registry: `localhost:5000/v2/\_catalog`
         cat /var/jenkins_home/secrets/initialAdminPassword
         ```
     * After account setup, choose "*Install suggested plugins*"
+
+    ![Jenkins Welcome Screen](https://raw.githubusercontent.com/bdruesedow/kubernetes-workshop/master/lecture/images/jenkins.PNG)
 
 * Create a new Multibranch Pipeline
     * Add Branch Sources -> GitHub

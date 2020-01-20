@@ -7,7 +7,7 @@ def wasLastCommitSemanticReleaseVersioningOnly = false
 pipeline {
     agent {
         dockerfile {
-            filename 'greeting-backend/docker/dockerfile-jenkins'
+            filename 'greeting-service/docker/dockerfile-jenkins'
             // mount the docker daemon from the host into the agent
             args '-ti -v /var/run/docker.sock:/var/run/docker.sock'
         }
@@ -18,13 +18,12 @@ pipeline {
     }
     environment {
         GIT_REPO_NAME = GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')
-        REGISTRY = "registry:5002" // muss in /.docker/daemon.json als insecure registry stehen!
+        REGISTRY = "<your-ip>:5000" // muss in /.docker/daemon.json als insecure registry stehen!
     }
     stages {
         stage("Package") {
             steps {
-                dir("greeting-backend") {
-                    sh "pwd"
+                dir("greeting-service") {
                     sh "chmod +x gradlew"
                     sh "./gradlew bootJar"
                 }
@@ -33,12 +32,11 @@ pipeline {
         stage("Build and Push Docker Image") {
             environment {
                 SHORT_BRANCH = "${shortenGitBranch()}"
-                DOCKERTAG = "${REGISTRY}/greeting-backend:${SHORT_BRANCH}-build.${BUILD_NUMBER}"
+                DOCKERTAG = "${REGISTRY}/greeting-service:${SHORT_BRANCH}-build.${BUILD_NUMBER}"
             }
             steps {
-                dir("greeting-backend") {
-                    sh "pwd"
-                    sh "docker build -t ${DOCKERTAG} -f docker/dockerfile-app-local ."
+                dir("greeting-service") {
+                    sh "docker build -t ${DOCKERTAG} -f docker/dockerfile-app ."
                     sh "docker push ${DOCKERTAG}"
                 }
             }
