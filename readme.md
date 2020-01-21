@@ -205,7 +205,7 @@ Interactive Kubernetes Tutorial: [Kubernetes.io Basics](https://kubernetes.io/de
 
 ![Jenkins Credentials](https://raw.githubusercontent.com/bdruesedow/kubernetes-workshop/master/lecture/images/registry_error.PNG)
 
-Docker daemon has not permission to pull from an insecure registry, that is not configured in `daemon.json`. To fix this, add the registry as insecure regsitry.
+Docker daemon has no permission to pull from an insecure registry, that is not configured in `daemon.json`. To fix this, add the registry as insecure regsitry.
 
 With docker desktop:
 
