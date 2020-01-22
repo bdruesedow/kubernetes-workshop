@@ -1,34 +1,34 @@
-{{- if .Values.greetingbackend.enabled }}
+{{- if .Values.greetingservice.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-{{ .Values.greetingbackend.image.name }}
+  name: {{ .Release.Name }}-{{ .Values.greetingservice.image.name }}
   labels:
     app.kubernetes.io/name: {{ include "demo.chart" . }}
     helm.sh/chart: {{ include "demo.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
-  replicas: {{ .Values.greetingbackend.image.replicaCount }}
+  replicas: {{ .Values.greetingservice.image.replicaCount }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "demo.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
-      app: {{.Values.greetingbackend.image.name}}
+      app: {{.Values.greetingservice.image.name}}
   template:
     metadata:
       labels:
         app.kubernetes.io/name: {{ include "demo.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
-        app: {{.Values.greetingbackend.image.name}}
+        app: {{.Values.greetingservice.image.name}}
     spec:
       imagePullSecrets:
-        - name: {{ .Values.greetingbackend.imagePullSecrets }}
+        - name: {{ .Values.greetingservice.imagePullSecrets }}
       securityContext: {}
       volumes:
-        - name: {{ .Values.greetingbackend.config.name }}
+        - name: {{ .Values.greetingservice.config.name }}
           configMap:
-            name: {{ .Values.greetingbackend.config.name }}
+            name: {{ .Values.greetingservice.config.name }}
             items:
               - key: application.properties
                 path: application.properties
@@ -38,13 +38,13 @@ spec:
           command: ['/bin/sh', '-c', 'sleep 20']
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.greetingbackend.image.repository }}:{{ .Values.greetingbackend.image.tag }}"
-          imagePullPolicy: {{ .Values.greetingbackend.image.pullPolicy }}
+          image: "{{ .Values.greetingservice.image.repository }}:{{ .Values.greetingservice.image.tag }}"
+          imagePullPolicy: {{ .Values.greetingservice.image.pullPolicy }}
           ports:
             - name: "http"
-              containerPort: {{ .Values.greetingbackend.service.port }}
+              containerPort: {{ .Values.greetingservice.service.port }}
           volumeMounts:
-            - name: {{ .Values.greetingbackend.config.name }}
+            - name: {{ .Values.greetingservice.config.name }}
               mountPath: "/home/config"
               readOnly: true
           env:

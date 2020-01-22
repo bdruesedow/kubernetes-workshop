@@ -4,12 +4,12 @@
 
 profile: local
 
-greetingbackend:
+greetingservice:
   enabled: true
   image:
     replicaCount: 1
-    name: greeting-backend
-    repository: <your-ip>:5000/greeting-backend
+    name: greeting-service
+    repository: 10.2.6.72:5000/greeting-service
     tag: latest
     pullPolicy: Always
     imagePullSecrets: regcred
@@ -18,7 +18,7 @@ greetingbackend:
     port: 8080
     targetPort: 9000
   config:
-    name: greeting-backend-config
+    name: greeting-service-config
 
 database:
   enabled: true
