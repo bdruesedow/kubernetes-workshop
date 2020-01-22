@@ -35,7 +35,7 @@ spec:
       initContainers:
         - name: wait-container
           image: alpine:3
-          command: ['/bin/sh', '-c', 'sleep 60']
+          command: ['/bin/sh', '-c', 'sleep 20']
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.greetingbackend.image.repository }}:{{ .Values.greetingbackend.image.tag }}"

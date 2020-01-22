@@ -201,7 +201,7 @@ Interactive Kubernetes Tutorial: [Kubernetes.io Basics](https://kubernetes.io/de
 * Remove unused networks: `docker network prune`
 * Remove unused images: `docker image prune`
 
-## Troubleshoot:
+## Troubleshooting:
 
 ![Jenkins Credentials](https://raw.githubusercontent.com/bdruesedow/kubernetes-workshop/master/lecture/images/registry_error.PNG)
 
