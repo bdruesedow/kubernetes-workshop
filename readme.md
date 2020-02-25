@@ -35,13 +35,14 @@ When asked, grant access to your filesystem:
 
 #### Install Kubernetes Helm: [How to Setup Kubernetes Helm](https://helm.sh/docs/intro/install/)
 
-## Exercise
+## Hands-On
 
-### Deployment with Docker
+### Hands-On - Part I: Deployment with Docker (45 min)
 
-1. Build greeting-service and helloworld-service with gradlew.bat
-2. Write Dockerfile for helloworld-service
-3. Build Dockerimages for greeting-service and helloworld-service
+a) greeting-service:
+
+1. Build greeting-service with gradlew
+2. Build Dockerimage for greeting-service
 
     ```
     docker build -t <service-name>:<tag> -f <path-to-dockerfile> <path-to-folder>
@@ -51,20 +52,20 @@ For example:
     docker build -t greeting-service:latest -f docker/dockerfile-app .
     ```
 
-4. Create Docker network to ensure communication between the services:
+3. Create Docker network to ensure communication between the services:
 
     ```
     docker network create <network-name>
     docker network ls
     ```
 
-5. Deploy MySQL database:
+4. Deploy MySQL database:
 
     ```
     docker run --name mysqldb --net <network-name> -e MYSQL_ROOT_PASSWORD=s1ch3r -d mysql:5.7.14
     ```
 
-6. Deploy greeting-service:
+5. Deploy greeting-service:
 
     ```
     docker run --name greeting-service --net <network-name> -d -p 8080:8080 greeting-service:latest
@@ -94,7 +95,7 @@ For example:
     docker rm greeting-service mysqldb
     ```
 
-## Deployment with Compose:
+### Hands-On Part II: Deployment with Compose:
 
     ```
     cd compose
@@ -114,27 +115,46 @@ For example:
     docker-compose down
     ```
 
-## Kubernetes Tutorials:
+### Kubernetes Tutorials:
 
 Interactive Kubernetes Tutorial: [Kubernetes.io Basics](https://kubernetes.io/de/docs/tutorials/kubernetes-basics/)
 
-**Solve parts 1, 2 & 3**  (30 minutes)
+**Solve parts 1, 2 & 3**  (45 minutes)
 
-![Kubernetes.io Tutorials 1, 2, 3](https://raw.githubusercontent.com/bdruesedow/kubernetes-workshop/master/lecture/images/k8s_tutorials.PNG)
+![Kubernetes.io Tutorials 1, 2, 3](https://raw.githubusercontent.com/bdruesedow/kubernetes-workshop/master/lecture/images/k8s_tutorial.PNG)
 
 
-## Deployment to Kubernetes with Helm:
+### Deployment to Kubernetes with Helm:
 
-1. Release Helm Chart:
+a) First release:
+
+1. Deploy the local docker registry:
+
+    ```
+    cd environment/registry
+    docker-compose up -d
+    curl localhost:5000/v2/_catalog
+    ```
+
+2. Push the images into the local registry:
+
+    ```
+    docker tag greeting-service:latest localhost:5000/greeting-service:latest
+    docker push localhost:5000/greeting-service:latest
+    ```
+
+    Repeat for the helloworld-service.
+
+3. Release Helm Chart:
 
     ```
     cd helm/demo
     helm install <release-name> <path-to-chart>
     ```
 
-2. Look into the cluster:
+4. Look into the cluster:
 
-    Run `k9s.exe`
+    Run `k9s`
 
     or use `kubectl` commands:
 
@@ -147,19 +167,22 @@ Interactive Kubernetes Tutorial: [Kubernetes.io Basics](https://kubernetes.io/de
     kubectl describe <ressource>
     ```
 
-3. Create Helm templates for `helloworld-service`
-    * Create new directory under `templates/`
-    * Create a deployment.yaml, and service.yaml for the service.
-    * Update `values.yaml` to work with your new templates.
-    * Validate the helm chart with `helm lint`
-    * Rollout a release (`helm upgrade <release-name> <path-to-chart>`)
-    * Forward the ports of your services and check the outputs of:
-        * `localhost:<forwarded-port-of-greeting-service>/greeting?name=World`
-        * `localhost:<forwarded-port-of-greeting-service>/getGreetings`
-        * `localhost:<forwarded-port-of-helloworld-service>/hello`
+
+b) Update the release:
+
+1. Create new templates directory under `templates/`
+2. Create a deployment.yaml, and service.yaml for the helloworld-service.
+3. Update `values.yaml` to work with your new templates.
+4. Validate the helm chart with `helm lint`
+5. Rollout a release (`helm upgrade <release-name> <path-to-chart>`)
+6. Forward the ports of your services
+7. Check the outputs of:
+    * `localhost:<forwarded-port-of-greeting-service>/greeting?name=World`
+    * `localhost:<forwarded-port-of-greeting-service>/getGreetings`
+    * `localhost:<forwarded-port-of-helloworld-service>/hello`
 
 
-## CI-Pipeline with Jenkins:
+### CI-Pipeline with Jenkins:
 
 * Deploy Jenkins-CI Server and a local Docker-Registry:
 
@@ -216,7 +239,7 @@ or directly the `daemon.json` file:
 ```               
 {                                           
  "registry-mirrors": [],                   
- "insecure-registries": ["<your-ip>:5002"],
+ "insecure-registries": ["<your-ip>:5000"],
  "debug": true,                            
  "experimental": false                     
 }                                           
