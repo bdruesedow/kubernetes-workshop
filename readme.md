@@ -95,7 +95,9 @@ For example:
     docker rm greeting-service mysqldb
     ```
 
-### Hands-On Part II: Deployment with Compose:
+### Hands-On - Part II: Deployment with Compose:
+
+* Run deployment with docker compose:
 
     ```
     cd compose
@@ -115,7 +117,7 @@ For example:
     docker-compose down
     ```
 
-### Kubernetes Tutorials:
+### Hands-On - Part III: Kubernetes Tutorials:
 
 Interactive Kubernetes Tutorial: [Kubernetes.io Basics](https://kubernetes.io/de/docs/tutorials/kubernetes-basics/)
 
