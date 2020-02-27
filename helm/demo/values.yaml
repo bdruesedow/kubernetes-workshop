@@ -9,16 +9,29 @@ greetingservice:
   image:
     replicaCount: 1
     name: greeting-service
-    repository: 10.2.6.72:5000/greeting-service
+    repository: localhost:5000/greeting-service
     tag: latest
     pullPolicy: Always
     imagePullSecrets: regcred
   service:
     type: ClusterIP
     port: 8080
-    targetPort: 9000
+    targetPort: 8080
   config:
     name: greeting-service-config
+
+helloworldservice:
+  enabled: true
+  image:
+    replicaCount: 1
+    name: helloworld-service
+    repository: localhost:5000/helloworld-service
+    tag: latest
+    pullPolicy: Always
+    imagePullSecrets: regcred
+  service:
+    type: ClusterIP
+    port: 8080
 
 database:
   enabled: true

@@ -1,0 +1,47 @@
+{{- if .Values.helloworldservice.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.helloworldservice.image.name }}
+  labels:
+    app.kubernetes.io/name: {{ include "demo.chart" . }}
+    helm.sh/chart: {{ include "demo.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.helloworldservice.image.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "demo.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app: {{.Values.helloworldservice.image.name}}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "demo.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app: {{.Values.helloworldservice.image.name}}
+    spec:
+      imagePullSecrets:
+        - name: {{ .Values.helloworldservice.imagePullSecrets }}
+      securityContext: {}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.helloworldservice.image.repository }}:{{ .Values.helloworldservice.image.tag }}"
+          imagePullPolicy: {{ .Values.helloworldservice.image.pullPolicy }}
+          ports:
+            - name: "http"
+              containerPort: {{ .Values.helloworldservice.service.port }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 120
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 120
+            periodSeconds: 10
+{{- end}}

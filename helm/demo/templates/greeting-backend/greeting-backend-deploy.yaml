@@ -1,13 +1,15 @@
 {{- if .Values.greetingservice.enabled }}
 apiVersion: apps/v1
-kind: Deployment
+kind: Deployment    # kind of K8s resource
 metadata:
   name: {{ .Release.Name }}-{{ .Values.greetingservice.image.name }}
+  # label configuration, resources can be found by labels
   labels:
     app.kubernetes.io/name: {{ include "demo.chart" . }}
     helm.sh/chart: {{ include "demo.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
+# specs for the deployment
 spec:
   replicas: {{ .Values.greetingservice.image.replicaCount }}
   selector:
@@ -15,16 +17,19 @@ spec:
       app.kubernetes.io/name: {{ include "demo.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
       app: {{.Values.greetingservice.image.name}}
+  # start of deployment template
   template:
     metadata:
       labels:
         app.kubernetes.io/name: {{ include "demo.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
         app: {{.Values.greetingservice.image.name}}
+    # begin of pod specification
     spec:
       imagePullSecrets:
         - name: {{ .Values.greetingservice.imagePullSecrets }}
       securityContext: {}
+      # volumes that will be mounted to the pod
       volumes:
         - name: {{ .Values.greetingservice.config.name }}
           configMap:
@@ -32,10 +37,12 @@ spec:
             items:
               - key: application.properties
                 path: application.properties
+      # init container, that will run before the containers
       initContainers:
         - name: wait-container
           image: alpine:3
           command: ['/bin/sh', '-c', 'sleep 20']
+      # main container
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.greetingservice.image.repository }}:{{ .Values.greetingservice.image.tag }}"

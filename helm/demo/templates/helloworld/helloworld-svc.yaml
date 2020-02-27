@@ -1,0 +1,23 @@
+{{- if .Values.helloworldservice.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.helloworldservice.image.name }}
+  labels:
+    app.kubernetes.io/name: {{ include "demo.chart" . }}
+    helm.sh/chart: {{ include "demo.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app: {{.Values.helloworldservice.image.name}}
+    part: {{ include "demo.chart" . }}
+spec:
+  type: {{ .Values.helloworldservice.service.type }}
+  ports:
+    - port: {{ .Values.helloworldservice.service.port }}
+      protocol: TCP
+  sessionAffinity: "None"
+  selector:
+    app.kubernetes.io/name: {{ include "demo.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app: {{.Values.helloworldservice.image.name}}
+{{- end}}
