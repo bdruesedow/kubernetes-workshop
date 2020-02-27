@@ -91,8 +91,8 @@ For example:
 8. Stop and delete container:
 
     ```
-    docker stop greeting-service mysqldb
-    docker rm greeting-service mysqldb
+    docker stop greeting-service mysqldb helloworld-service
+    docker rm greeting-service mysqldb helloworld-service
     ```
 
 ### Hands-On - Part II: Deployment with Compose:
